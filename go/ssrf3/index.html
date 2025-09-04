@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSRF | CyberPoC</title>
+</head>
+<body>
+<H1>CyberPoC SSRF</H1>
+
+<form action="/get-file" method="get">
+    <input type="text" name="target" value="https://f.typesafe.cn/cyberpoc/hi.txt">
+    <button type="submit">Get</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言列表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div class="container mx-auto pt-8 w-3/5">
+    <div class="overflow-x-auto">
+        <h1 class="font-bold my-2">留言列表</h1>
+
+        <table class="min-w-full divide-y-2 divide-gray-200 text-sm">
+            <thead class="text-left">
+            <tr>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    邮箱
+                </th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    标题
+                </th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    内容
+                </th>
+            </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-200">
+
+            {{ range $x := .letters }}
+            <tr>
+                <td class="px-4 py-2 text-gray-700">
+                    {{ $x.Mail }}
+                </td>
+                <td class="px-4 py-2 text-gray-700">
+                    {{ $x.Title }}
+                </td>
+                <td class="px-4 py-2 text-gray-700">
+                    {{ $x.Content }}
+                </td>
+            </tr>
+            {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>CyberPoC</title>
+</head>
+<body>
+
+<section class="bg-gray-50">
+    <div class="p-8 md:p-12 lg:px-16 lg:py-24">
+        <div class="mx-auto max-w-lg text-center">
+            <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">
+                MONOPOLY
+            </h2>
+
+            <p class="hidden text-gray-500 sm:mt-4 sm:block">
+                You can buy and sell things freely here。
+            </p>
+
+            <p class="hidden text-gray-500 sm:mt-4 sm:block">
+                Username: {{ .Username }} Balance：{{ .Currency }}{{ .Balance }}
+            </p>
+        </div>
+
+        <div class="mx-auto mt-8 max-w-xl">
+            <form action="#" class="sm:flex sm:gap-4">
+                <div class="sm:flex-1">
+                    <label for="money" class="sr-only">Money</label>
+
+                    <input
+                            id="money"
+                            name="money"
+                            type="number"
+                            placeholder="Money"
+                            value="1"
+                            class="w-full rounded border-gray-200 bg-white p-3 text-gray-700 shadow transition focus:border-white focus:outline-none focus:ring focus:ring-red-400"
+                    />
+                </div>
+
+                <button
+                        type="button"
+                        onclick="Withdraw()"
+                        class="group mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-rose-600 px-5 py-3 text-white transition focus:outline-none focus:ring focus:ring-red-400 sm:mt-0 sm:w-auto"
+                >
+                    <span class="text-sm font-medium"> Withdraw </span>
+                </button>
+                <button
+                        type="button"
+                        onclick="CheckIn()"
+                        class="group mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-white transition focus:outline-none focus:ring focus:ring-blue-400 sm:mt-0 sm:w-auto"
+                >
+                    <span class="text-sm font-medium"> Check-In </span>
+                </button>
+                <button
+                        type="button"
+                        onclick="Buy()"
+                        class="group mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-black px-5 py-3 text-white transition focus:outline-none focus:ring focus:ring-black sm:mt-0 sm:w-auto"
+                >
+                    <span class="text-sm font-medium"> Buy </span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div class="p-4">
+    <pre class="mx-auto max-w-lg text-left">
+        <code id="result"></code>
+    </pre>
+</div>
+
+</body>
+
+<script type="application/javascript">
+    function Withdraw() {
+        let money = document.getElementById('money').value;
+        if (!money) {
+            alert(`Please input money`);
+            return;
+        }
+
+
+        fetch('/withdraw?amount=' + money)
+            .then(async response => {
+                let text = await response.text();
+                let element = document.getElementById('result');
+                element.innerHTML = text;
+            })
+    }
+
+    function CheckIn() {
+        fetch('/check-in')
+            .then(async response => {
+                let text = await response.text();
+                let element = document.getElementById('result');
+                element.innerHTML = text;
+            })
+    }
+
+    function Buy() {
+        fetch('/buy')
+            .then(async response => {
+                let text = await response.text();
+                let element = document.getElementById('result');
+                element.innerHTML = text;
+            })
+    }
+</script>
+</html>

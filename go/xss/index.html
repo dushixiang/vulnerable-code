@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/?plugins=forms"></script>
+    <title>CyberPoC</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"
+            integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="bg-gray-100 h-screen">
+    <div class="container mx-auto pt-16 w-4/5">
+        <div class="grid grid-cols-2 gap-8">
+            <div class="col-span-1">
+                <a class="group relative block bg-black cursor-pointer w-1/2 mx-auto" href="/letters">
+                    <img
+                            alt="hacker"
+                            src="https://f.typesafe.cn/cyberpoc/hacker.jpg"
+                            class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"
+                    />
+
+                    <div class="relative p-4 sm:p-6 lg:p-8">
+                        <p class="text-sm font-medium uppercase tracking-widest text-red-500">
+                            CyberPoC XSS 0x01
+                        </p>
+
+                        <p class="text-xl font-bold text-white sm:text-2xl">脚本小子</p>
+
+                        <div class="mt-32 sm:mt-48 lg:mt-64">
+                            <div
+                                    class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100"
+                            >
+                                <p class="text-sm text-white">
+                                    你好，我是一个黑客。我在这里提示你，你的电脑可能已经被黑客入侵，隐私内容将被公布于众，快点V我50帮你杀毒。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="col-span-1">
+                <div class="rounded bg-white shadow-lg p-10 shadow-xl w-2/3">
+                    <form id="cyberpoc" action="/letter" method="post" enctype="application/x-www-form-urlencoded" class="grid grid-cols-1 gap-4">
+                        <h1 class="font-bold">留言板</h1>
+                        <div>
+                            <label for="mail" class="text-sm">您的邮箱</label>
+                            <input type="email" class="block rounded w-full text-sm mt-1" id="mail" name="mail" placeholder="name@example.com">
+                        </div>
+                        <div>
+                            <label for="title" class="text-sm">标题</label>
+                            <input type="text" class="block rounded w-full text-sm mt-1" id="title" name="title" placeholder="请注明来源">
+                        </div>
+                        <div>
+                            <label for="content" class="text-sm">内容</label>
+                            <textarea class="block rounded w-full text-sm mt-1" id="content" name="content" rows="3" placeholder="求助内容"></textarea>
+                        </div>
+                        <button type="submit" class="block py-2 text-white bg-black rounded">提交</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    $('#cyberpoc').ajaxForm({
+        success: function (result) {
+            console.log(result)
+            alert(`提交成功`);
+        },
+        error: function () {
+            alert(`提交失败`);
+        }
+    });
+</script>
+</html>

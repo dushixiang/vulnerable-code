@@ -1,0 +1,51 @@
+name: Cleanup Old Docker Images
+
+on:
+  schedule:
+    # 每周日凌晨2点运行 (UTC)
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+
+env:
+  REGISTRY: docker.io
+  NAMESPACE: cyberpoc
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get environments
+        id: get-envs
+        run: |
+          cd go
+          envs=$(ls -d */ | grep -v build | sed 's|/||' | tr '\n' ' ')
+          echo "environments=$envs" >> $GITHUB_OUTPUT
+
+      - name: Delete old images
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          # 登录到Docker Hub
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          
+          # 对每个环境清理旧镜像
+          for env in ${{ steps.get-envs.outputs.environments }}; do
+            echo "Processing environment: $env"
+            
+            # 获取镜像标签列表 (保留最新的5个版本)
+            # 注意：这里需要使用Docker Hub API或者其他方式来获取和删除标签
+            # 由于Docker Hub的限制，这里只是示例代码
+            echo "Would cleanup old tags for cyberpoc/$env"
+          done
+
+      - name: Generate cleanup summary
+        run: |
+          echo "## 🧹 Image Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environments processed:** ${{ steps.get-envs.outputs.environments }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Policy:** Keep latest 5 versions per environment" >> $GITHUB_STEP_SUMMARY

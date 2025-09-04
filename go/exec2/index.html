@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>CyberPoC</title>
+</head>
+<body>
+
+<section class="bg-gray-50">
+    <div class="p-8 md:p-12 lg:px-16 lg:py-24">
+        <div class="mx-auto max-w-lg text-center">
+            <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">
+                网络测试
+                <span class="whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-sm text-red-700">
+                  新
+                </span>
+            </h2>
+
+            <p class="hidden text-gray-500 sm:mt-4 sm:block">
+                使用 ping 进行网络可达性测试
+            </p>
+        </div>
+
+        <div class="mx-auto mt-8 max-w-xl">
+            <form action="#" class="sm:flex sm:gap-4">
+                <div class="sm:flex-1">
+                    <label for="ip" class="sr-only">目的IP</label>
+
+                    <input
+                            id="ip"
+                            name="ip"
+                            type="text"
+                            placeholder="目的地址"
+                            value="127.0.0.1"
+                            class="w-full rounded border-gray-200 bg-white p-3 text-gray-700 shadow transition focus:border-white focus:outline-none focus:ring focus:ring-red-400"
+                    />
+                </div>
+
+                <button
+                        type="button"
+                        onclick="onClick()"
+                        class="group mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-rose-600 px-5 py-3 text-white transition focus:outline-none focus:ring focus:ring-red-400 sm:mt-0 sm:w-auto"
+                >
+                    <span class="text-sm font-medium"> Ping </span>
+
+                    <svg
+                            class="h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div class="p-4">
+    <pre class="mx-auto max-w-lg text-left">
+        <code id="result"></code>
+    </pre>
+</div>
+
+</body>
+
+<script type="application/javascript">
+    function onClick() {
+        let ip = document.getElementById('ip').value;
+        if (!ip) {
+            alert(`请输入目的地址`);
+            return;
+        }
+
+        load_result(`/ping?ip=${ip}`)
+    }
+
+    function load_result(url) {
+
+        let element = document.getElementById('result');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.seenBytes = 0;
+        xhr.onreadystatechange = function () {
+            console.log("state change.. state: " + xhr.readyState);
+
+            if (xhr.readyState === 3) {
+                console.log(xhr.responseText)
+                element.innerHTML = xhr.responseText;
+            }
+        };
+
+        xhr.addEventListener("error", function (e) {
+            console.log("error: " + e);
+        });
+
+        console.log(xhr);
+        xhr.send();
+    }
+
+</script>
+</html>

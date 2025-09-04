@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CyberPoC</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.form/4.3.0/jquery.form.js"></script>
+</head>
+<body>
+
+<section class="bg-gray-50">
+    <div
+            class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
+    >
+        <div class="mx-auto max-w-xl text-center">
+            <h1 class="text-3xl font-extrabold sm:text-5xl">
+                <strong class="font-extrabold text-red-700 sm:block">
+                    您的秘密保险箱
+                </strong>
+            </h1>
+
+            <p class="mt-4 sm:text-xl sm:leading-relaxed">
+                我们的愿景是：简单、好用、安全！希望你喜欢。
+            </p>
+
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <form id="cyberpoc" action="/flag" method="post" class="flex flex-wrap justify-between border-2 rounded-md border-red-500">
+                    <input type="search"
+                           name="passcode"
+                           placeholder="请输入您的密码"
+                           required="required"
+                           class="flex-1 px-4 m-1 text-gray-700 placeholder-gray-400 bg-transparent border-none appearance-none focus:outline-none focus:placeholder-transparent focus:ring-0"/>
+                    <button type="submit"
+                            class="flex items-center justify-center w-full p-2 m-1 text-white transition-colors duration-300 transform rounded-lg lg:w-12 lg:h-12 lg:p-0 bg-red-500 hover:bg-red-700 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                             class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<script type="application/javascript">
+
+    $('#cyberpoc').ajaxForm({
+        success: function (result) {
+            alert(`您的FLAG是：${result}`)
+        },
+        error: function (e) {
+            console.log(e)
+            let responseText = e.responseText;
+            alert(responseText)
+        }
+    });
+</script>
+</html>

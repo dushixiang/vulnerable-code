@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CyberPoC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"
+            integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<section class="bg-gray-50">
+    <div
+            class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
+    >
+        <div class="mx-auto max-w-xl text-center">
+            <h1 class="text-3xl font-extrabold sm:text-5xl">
+
+                <strong class="font-extrabold text-red-700 sm:block">
+                    高性能对象存储服务
+                </strong>
+            </h1>
+
+            <p class="mt-4 sm:text-xl sm:leading-relaxed">
+                我们的愿景是：简单、好用、安全！希望你喜欢。
+            </p>
+
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <button
+                        id="uploadBtn"
+                        class="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
+                        onclick="chooseFile()"
+                >
+                    选择文件
+                </button>
+
+                <form id="cyberpoc" action="/upload" method="post" enctype="multipart/form-data">
+                    <input id="file" hidden="hidden" type="file" name="file" onchange="handleFileChange()">
+
+                    <button
+                            class="block w-full rounded px-12 py-3 text-sm font-medium text-red-600 shadow hover:text-red-700 focus:outline-none focus:ring active:text-red-500 sm:w-auto"
+                            type="submit"
+                    >
+                        立刻上传
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<script type="application/javascript">
+
+    $('#cyberpoc').ajaxForm({
+        success: function (result) {
+            console.log(result)
+            alert(`上传成功`)
+        },
+        error: function () {
+            alert(`上传失败`)
+        }
+    });
+
+    let fileInput = document.getElementById('file');
+    let uploadBtn = document.getElementById('uploadBtn');
+
+    function chooseFile() {
+        fileInput.click();
+    }
+
+    function handleFileChange(e) {
+        let file = fileInput.value;
+        let value = file.replace(`C:\\fakepath\\`, "");
+        console.log(value)
+        uploadBtn.innerText = value;
+    }
+</script>
+</html>
