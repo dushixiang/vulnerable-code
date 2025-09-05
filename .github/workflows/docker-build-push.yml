@@ -28,18 +28,45 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for accurate diff
 
-      - name: Get environments
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: go/**
+
+      - name: Get changed environments
         id: get-envs
         run: |
           if [ -n "${{ github.event.inputs.environment }}" ]; then
-            # 如果指定了特定环境，只构建该环境
+            # If a specific environment is specified via workflow_dispatch, build only that one
             echo "environments=[\"${{ github.event.inputs.environment }}\"]" >> $GITHUB_OUTPUT
+            echo "Building specified environment: ${{ github.event.inputs.environment }}"
           else
-            # 获取所有包含Dockerfile的环境
-            cd go
-            envs=$(ls -d */ | grep -v build | sed 's|/||' | jq -R -s -c 'split("\n")[:-1]')
-            echo "environments=$envs" >> $GITHUB_OUTPUT
+            # Get directories of changed files
+            changed_dirs=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep '^go/' | xargs -n 1 dirname | sed 's|^go/||' | sort -u | uniq)
+            
+            valid_envs=()
+            for dir in $changed_dirs; do
+                # Make sure dir is not empty
+                if [[ -n "${dir// }" ]]; then
+                  # Check if it's a directory containing a Dockerfile
+                  if [ -f "go/$dir/Dockerfile" ]; then
+                      valid_envs+=("\"$dir\"")
+                  fi
+                fi
+            done
+            
+            if [ ${#valid_envs[@]} -eq 0 ]; then
+              echo "No changed environments with Dockerfiles found. Nothing to build."
+              echo "environments=[]" >> $GITHUB_OUTPUT
+            else
+              environments=$(IFS=,; echo "[${valid_envs[*]}]")
+              echo "environments=$environments" >> $GITHUB_OUTPUT
+              echo "Building changed environments: $environments"
+            fi
           fi
 
   build-and-push:
