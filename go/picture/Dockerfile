@@ -20,4 +20,4 @@ WORKDIR /cyberpoc
 COPY --from=builder /cyberpoc/app ./app
 
 EXPOSE 80
-ENTRYPOINT ./app
+ENTRYPOINT exec ./app

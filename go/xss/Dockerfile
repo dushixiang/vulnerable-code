@@ -18,4 +18,4 @@ COPY --from=builder /cyberpoc/app ./app
 COPY --from=builder /cyberpoc/*.html ./
 
 EXPOSE 80
-ENTRYPOINT ./app
+ENTRYPOINT exec ./app
