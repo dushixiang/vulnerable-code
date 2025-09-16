@@ -29,3 +29,4 @@
 - [任意文件上传](./go/upload)
 - [xss](./go/xss)
 - [zip解压目录穿越](./go/zipslip)
+- [SQL注入](./go/sqli)
