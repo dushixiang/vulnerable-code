@@ -30,3 +30,4 @@
 - [xss](./go/xss)
 - [zip解压目录穿越](./go/zipslip)
 - [SQL注入](./go/sqli)
+- [水平越权](./go/horizontal_privilege)
