@@ -108,6 +108,16 @@ func randomStr() string {
 	return md5V2(string(randomByte(32)))
 }
 
+func selfCheck(now int64) error {
+	rand.Seed(now)
+	token1 := randomStr()
+	rand.Seed(now)
+	token2 := randomStr()
+	if token1 != token2 {
+		return errors.New("token is not equal")
+	}
+	return nil
+}
 func main() {
 
 	e := echo.New()
@@ -119,6 +129,10 @@ func main() {
 	// 模拟系统运行了一段时间
 	result1, _ := realRand.Int(realRand.Reader, big.NewInt(100000))
 	now := time.Now().UTC().Unix() - result1.Int64()
+	if err := selfCheck(now); err != nil {
+		fmt.Println("selfCheck failed:", err)
+		return
+	}
 	rand.Seed(now)
 
 	e.GET("/", func(c echo.Context) error {
