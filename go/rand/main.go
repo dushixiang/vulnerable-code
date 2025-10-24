@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -35,11 +37,28 @@ var (
 	iv  []byte
 )
 
+func selfCheck(ts int64, key []byte, iv []byte) error {
+	rand.Seed(ts)
+	newKey := randomByte(len(key))
+	newIv := randomByte(len(iv))
+	if !bytes.Equal(key, newKey) {
+		return errors.New("key is not equal")
+	}
+	if !bytes.Equal(iv, newIv) {
+		return errors.New("iv is not equal")
+	}
+	return nil
+}
+
 func main() {
 	now := time.Now().Unix()
 	rand.Seed(now)
 	key = randomByte(16)
 	iv = randomByte(aes.BlockSize)
+	if err := selfCheck(now, key, iv); err != nil {
+		fmt.Println("selfCheck failed:", err)
+		return
+	}
 
 	e := echo.New()
 	e.Debug = true
