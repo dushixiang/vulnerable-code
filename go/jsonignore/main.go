@@ -30,7 +30,7 @@ func main() {
 		var u = User{}
 
 		// Echo 的 Bind 默认使用 encoding/json
-		if err := c.Bind(u); err != nil {
+		if err := c.Bind(&u); err != nil {
 			return c.JSON(http.StatusBadRequest, echo.Map{
 				"error": "Invalid JSON",
 			})
