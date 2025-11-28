@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4/middleware"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
